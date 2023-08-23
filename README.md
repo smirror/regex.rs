@@ -1,4 +1,5 @@
-# rust-template
+# regex.rs
+regex written by Rust
 
-# set-up
-1. rewrite `name = "{your_project}"` in `cargo.toml` 
+## reference 
+- https://github.com/ytakano/rust_zero
