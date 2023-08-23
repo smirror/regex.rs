@@ -1,10 +1,11 @@
-//! 正規表現の式をパースし、抽象構文木に変換。
+//! 正規表現の式をパースし、抽象構文木に変換
 use std::{
     error::Error,
     fmt::{self, Display},
     mem::take,
 };
 
+/// パースエラーを表すための型
 #[derive(Debug)]
 pub enum ParseError {
     InvalidEscape(usize, char), // 誤ったエスケープシーケンス
@@ -37,6 +38,7 @@ impl Display for ParseError {
 
 impl Error for ParseError {} // エラー用に、Errorトレイトを実装
 
+/// 抽象構文木を表現するための型
 #[derive(Debug)]
 pub enum AST {
     Char(char),
@@ -44,7 +46,7 @@ pub enum AST {
     Star(Box<AST>),
     Question(Box<AST>),
     Or(Box<AST>, Box<AST>),
-    Seq(Box<AST>),
+    Seq(Vec<AST>),
 }
 
 /// parse_plus_star_question関数で利用するための列挙型
@@ -145,6 +147,7 @@ pub fn parse(expr: &str) -> Result<AST, ParseError> {
 }
 
 /// +、*、?をASTに変換
+///
 /// 後置記法で、+、*、?の前にパターンがない場合はエラー
 ///
 /// 例 : *ab、abc|+などはエラー
